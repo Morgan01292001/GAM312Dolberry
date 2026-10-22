@@ -27,6 +27,11 @@ void APlayerChar2::BeginPlay()
 	
 	FTimerHandle StatsTimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(StatsTimerHandle, this, &APlayerChar2::DecreaseStats, 2.0f, true);
+
+	if (objWidget) {
+		objWidget->UpdatebuildOBJ(0.0f);
+		objWidget->UpdatematOBJ(0.0f);
+	}
 }
 
 // Called every frame
@@ -107,6 +112,8 @@ void APlayerChar2::FindObject()
 						if(HitResource->totalResource > resourceValue)
 						{
 							GiveResource(resourceValue, hitName);
+							matsCollected += resourceValue;
+							objWidget->UpdatematOBJ(matsCollected);
 							check(GEngine != nullptr);
 							GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("You have collected %d %s. %d remaining."), resourceValue, *hitName, HitResource->totalResource));
 
@@ -125,7 +132,8 @@ void APlayerChar2::FindObject()
 	}
 	else {
 		isBuilding = false;
-
+		objectsBuilt++;
+		objWidget->UpdatebuildOBJ(objectsBuilt);
 	}
 	
 }
