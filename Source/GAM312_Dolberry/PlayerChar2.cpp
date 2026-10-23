@@ -8,8 +8,9 @@ APlayerChar2::APlayerChar2()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	// this camera component is implemented here.
 	PlayerCamComp = CreateDefaultSubobject<UCameraComponent>(TEXT("First Person Cam"));
-
+	// the camera is attached to the head bone of the player character's mesh. This allows the camera to move with the character's head movements.
 	PlayerCamComp->SetupAttachment(GetMesh(), "Head");
 	PlayerCamComp->bUsePawnControlRotation = true;
 
@@ -89,6 +90,8 @@ void APlayerChar2::StopJump()
 
 void APlayerChar2::FindObject()
 {
+	// explaining the linear algebra here, it's multiplying and adding numbers in a set of 3 to target a location in 3D space.
+	// use of trace and collision here is to detect interactions with objects in the game world.
 	FHitResult HitResult;
 	FVector StartLocation = PlayerCamComp->GetComponentLocation();
 	FVector Direction = PlayerCamComp->GetForwardVector() * 800.0f;
